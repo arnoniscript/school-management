@@ -31,13 +31,14 @@
 
             <div class="mb-3">
                 <label class="form-label">Selecione os Alunos:</label>
-                <ul class="list-group">
+                <p><strong id="remaining-spots">{{ $course->max_students - count($enrollments) }}</strong> vagas restantes</p>
+                <ul class="list-group" id="student-list">
                     @foreach ($students as $student)
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span>{{ $student->full_name }} ({{ $student->cpf }})</span>
                             <input type="checkbox" name="students[]" value="{{ $student->id }}"
                                 {{ in_array($student->id, $enrollments) ? 'checked' : '' }}
-                                {{ !$user->isAdmin() && in_array($student->id, $enrollments) ? 'disabled' : '' }}>
+                                {{ in_array($student->id, $enrollments) ? 'data-checked="true"' : '' }}>
                         </li>
                     @endforeach
                 </ul>
@@ -88,17 +89,46 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const checkboxes = document.querySelectorAll('#student-list input[type="checkbox"]');
+            const remainingSpotsElement = document.getElementById('remaining-spots');
+            const maxSpots = {{ $course->max_students }};
+            const initiallyChecked = {{ count($enrollments) }};
+            let checkedCount = initiallyChecked;
+
+            // Atualiza o número de vagas restantes
+            const updateRemainingSpots = () => {
+                const remainingSpots = maxSpots - checkedCount;
+                remainingSpotsElement.textContent = remainingSpots;
+            };
+
+            // Inicializa as vagas restantes
+            updateRemainingSpots();
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', (event) => {
+                    if (event.target.checked) {
+                        if (checkedCount < maxSpots) {
+                            checkedCount++;
+                        } else {
+                            event.target.checked = false; // Desabilitar se exceder o limite
+                        }
+                    } else {
+                        checkedCount--;
+                    }
+                    updateRemainingSpots();
+                });
+            });
+
+            // Inicializar toasts do Bootstrap
             const successToast = document.getElementById('successToast');
             const errorToast = document.getElementById('errorToast');
 
             if (successToast) {
-                const toast = new bootstrap.Toast(successToast);
-                toast.show();
+                new bootstrap.Toast(successToast).show();
             }
 
             if (errorToast) {
-                const toast = new bootstrap.Toast(errorToast);
-                toast.show();
+                new bootstrap.Toast(errorToast).show();
             }
         });
     </script>

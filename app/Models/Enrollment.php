@@ -11,6 +11,10 @@ class Enrollment extends Model
 
     protected $fillable = ['course_id', 'student_id', 'enrollment_date'];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
+
     public function course()
     {
         return $this->belongsTo(Course::class);
@@ -20,4 +24,10 @@ class Enrollment extends Model
     {
         return $this->belongsTo(Student::class);
     }
+
+    public function getFormattedCreatedAtAttribute()
+    {
+        return $this->created_at->format('d/m/Y');
+    }
+
 }

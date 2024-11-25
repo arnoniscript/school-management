@@ -5,7 +5,7 @@
                 value="{{ request('name') }}">
         </div>
         <div class="col-md-2">
-            <input type="number" name="max_students" class="form-control" placeholder="Máximo de vagas"
+            <input type="number" name="max_students" class="form-control" placeholder="Num. Min. de Vagas"
                 value="{{ request('max_students') }}">
         </div>
         <div class="col-md-3">
