@@ -29,7 +29,8 @@ class CourseController extends Controller
             $query->where('type', $request->input('type'));
         }
 
-        $courses = $query->paginate(10)->appends($request->query());
+        // Carregar a relação de matrículas (Eager Loading)
+        $courses = $query->with('enrollments')->paginate(10)->appends($request->query());
 
         return view('courses.index', compact('courses'));
     }
