@@ -36,7 +36,14 @@ class StudentController extends Controller
             $query->where('birth_date', $request->input('birth_date'));
         }
 
-        $students = $query->paginate(10)->appends($request->query());
+        $perPage = is_numeric($request->input('per_page')) && $request->input('per_page') > 0
+            ? (int) $request->input('per_page')
+            : 15;
+        $sort = $request->input('sort', 'full_name'); // Ordenar por 'full_name' por padrão
+        $direction = $request->input('direction', 'asc'); // Ordem ascendente por padrão
+        $query->orderBy($sort, $direction);
+
+        $students = $query->paginate($perPage)->appends($request->query());
 
         return view('students.index', compact('students'));
     }

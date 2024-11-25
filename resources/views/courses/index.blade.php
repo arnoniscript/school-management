@@ -18,6 +18,22 @@
         <!-- Filtros de Busca -->
         <x-course-filter />
 
+       
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+        <x-number-per-page :route="route('courses.index')" />
+    <x-order-dropdown 
+        :route="route('courses.index')" 
+        :fields="[
+            'name' => 'Nome',
+            'max_students' => 'Máximo de Estudantes',
+            'final_date' => 'Data Máxima',
+            'type' => 'Tipo',
+        ]" 
+    />
+</div>
+
+
         <!-- Tabela de Cursos -->
         <div class="table-responsive mt-3">
             <x-course-list :courses="$courses" />

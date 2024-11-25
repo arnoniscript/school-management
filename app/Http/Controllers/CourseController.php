@@ -29,11 +29,20 @@ class CourseController extends Controller
             $query->where('type', $request->input('type'));
         }
 
-        // Carregar a relação de matrículas (Eager Loading)
-        $courses = $query->with('enrollments')->paginate(10)->appends($request->query());
+        // Definir o número de itens por página
+        $perPage = is_numeric($request->input('per_page')) && $request->input('per_page') > 0
+            ? (int) $request->input('per_page')
+            : 15;
+        $sort = $request->input('sort', 'name');
+        $direction = $request->input('direction', 'asc');
+        $query->orderBy($sort, $direction);
+
+        $courses = $query->with('enrollments')->paginate($perPage)->appends($request->query());
 
         return view('courses.index', compact('courses'));
     }
+
+
 
 
     public function store(Request $request)
