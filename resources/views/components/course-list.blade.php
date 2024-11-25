@@ -20,7 +20,7 @@
                         <i class="bi bi-person-plus"></i> Matricular
                     </a>
                     @if(auth()->user()->role === 'admin')
-                        <a href="#" class="btn btn-warning btn-sm">
+                        <a href="{{ route('courses.show', $course) }}" class="btn btn-warning btn-sm">
                             <i class="bi bi-pencil-square"></i> Editar
                         </a>
                     @endif

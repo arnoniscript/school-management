@@ -22,6 +22,10 @@ use App\Http\Controllers\CourseController;
 Route::middleware(['auth'])->group(function () {
     Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
     Route::post('/courses', [CourseController::class, 'store'])->name('courses.store');
+    Route::get('/courses/{course}', [CourseController::class, 'show'])->name('courses.show');
+    Route::put('/courses/{course}', [CourseController::class, 'update'])->name('courses.update');
+
+
 });
 
 

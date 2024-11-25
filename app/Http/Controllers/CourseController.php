@@ -49,8 +49,41 @@ class CourseController extends Controller
             'type' => 'required|in:online,presencial',
         ]);
 
-        Course::create($validated);
+        $course = Course::create($validated);
 
-        return response()->json(['message' => 'Curso criado com sucesso!']);
+        // Retorna uma resposta JSON explícita
+        return response()->json([
+            'message' => 'Curso criado com sucesso!',
+            'course' => $course,
+        ]);
     }
+
+
+
+
+    public function show(Course $course)
+    {
+        return view('courses.show', compact('course'));
+    }
+
+    public function update(Request $request, Course $course)
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Você não tem permissão para acessar esta rota.');
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'max_students' => 'required|integer|min:1',
+            'final_date' => 'required|date',
+            'type' => 'required|in:online,presencial',
+        ]);
+
+        $course->update($validated);
+
+        return redirect()->route('courses.show', $course)
+            ->with('success', 'Curso atualizado com sucesso!');
+    }
+
+
 }

@@ -6,7 +6,6 @@
     </x-slot>
 
     <div class="container mt-4">
-
         <!-- Botão Criar Curso -->
         <div class="d-flex justify-content-between mb-3">
             @if(auth()->user()->role === 'admin')
@@ -40,7 +39,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <x-course-form />
+                    <x-course-form id="create-course-form" :action="route('courses.store')" method="POST" />
                 </div>
             </div>
         </div>
@@ -63,17 +62,31 @@
             })
                 .then(response => {
                     if (!response.ok) {
+                        // Retornar JSON para capturar mensagem de erro
                         return response.json().then(err => Promise.reject(err));
                     }
                     return response.json();
                 })
                 .then(data => {
+                    const modalElement = document.getElementById('createCourseModal');
+                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+
+                    // Fechar o modal após sucesso
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
+
+                    // Exibir alerta de sucesso
                     alert('Curso criado com sucesso!');
+
+                    // Recarregar a página
                     location.reload();
                 })
                 .catch(error => {
                     console.error('Erro:', error);
-                    alert('Erro ao criar curso. Verifique os dados e tente novamente.');
+
+                    // Exibir alerta de erro
+                    alert('Erro ao criar curso. Tente novamente.');
                 });
         });
     </script>
