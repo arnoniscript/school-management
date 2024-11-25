@@ -9,6 +9,11 @@ class StudentController extends Controller
 {
     public function index(Request $request)
     {
+
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Você não tem permissão para acessar esta rota.');
+        }
+
         $query = Student::query();
 
         if ($request->filled('full_name')) {
@@ -39,6 +44,11 @@ class StudentController extends Controller
 
     public function store(Request $request)
     {
+
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Você não tem permissão para acessar esta rota.');
+        }
+
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
             'mother_name' => 'required|string|max:255',
@@ -55,10 +65,19 @@ class StudentController extends Controller
 
     public function show(Student $student)
     {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Você não tem permissão para acessar esta rota.');
+        }
+
         return view('students.show', compact('student'));
     }
     public function update(Request $request, Student $student)
     {
+
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Você não tem permissão para acessar esta rota.');
+        }
+
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
             'mother_name' => 'required|string|max:255',
