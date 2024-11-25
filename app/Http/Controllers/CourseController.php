@@ -29,7 +29,7 @@ class CourseController extends Controller
             $query->where('type', $request->input('type'));
         }
 
-        $courses = $query->paginate(10)->appends($request->query()); // Adiciona os parâmetros da query string à paginação
+        $courses = $query->paginate(10)->appends($request->query());
 
         return view('courses.index', compact('courses'));
     }
