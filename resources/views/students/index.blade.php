@@ -15,6 +15,19 @@
 
         <!-- Barra de Busca -->
         <x-search-bar />
+    
+        <div class="d-flex justify-content-between align-items-center mb-3">
+        <x-number-per-page :route="route('students.index')" />
+    <x-order-dropdown 
+        :route="route('students.index')" 
+        :fields="[
+            'full_name' => 'Nome Completo',
+            'cpf' => 'CPF',
+            'email' => 'Email',
+            'birth_date' => 'Data de Nascimento',
+        ]" 
+    />
+</div>
 
         <!-- Tabela de Estudantes -->
         <x-student-table :students="$students" />

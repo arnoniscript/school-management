@@ -7,6 +7,7 @@
 
     <div class="container mt-4">
 
+        <!-- Formulário de Edição -->
         <form action="{{ route('courses.update', $course) }}" method="POST" id="edit-course-form">
             @csrf
             @method('PUT')
@@ -40,8 +41,38 @@
             </a>
 
             <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-
         </form>
+
+        <!-- Lista de Alunos Matriculados -->
+        <div class="mt-5">
+            <h4>Alunos Matriculados</h4>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Data de Matrícula</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($course->enrollments as $enrollment)
+                            <tr>
+                                <td>{{ $enrollment->student->full_name }}</td>
+                                <td>{{ $enrollment->student->cpf }}</td>
+                                <td>{{ $enrollment->formatted_created_at }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="text-center">Nenhum aluno matriculado neste curso.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+
+
+                </table>
+            </div>
+        </div>
     </div>
 
     <!-- Toast Container -->

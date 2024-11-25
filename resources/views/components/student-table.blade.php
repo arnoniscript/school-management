@@ -1,13 +1,13 @@
 <div class="table-responsive mt-3">
-    <table class="table table-striped table-hover">
+    <table class="table table-striped table-hover" style="table-layout: fixed; width: 100%;">
         <thead class="table-dark">
             <tr>
-                <th>Nome Completo</th>
-                <th>Nome da Mãe</th>
-                <th>Data de Nascimento</th>
-                <th>Email</th>
-                <th>CPF</th>
-                <th>Ações</th>
+                <th style="width: 25%;">Nome Completo</th>
+                <th style="width: 20%;">Nome da Mãe</th>
+                <th style="width: 15%;">Data de Nascimento</th>
+                <th style="width: 20%;">Email</th>
+                <th style="width: 10%;">CPF</th>
+                <th style="width: 10%;">Ações</th>
             </tr>
         </thead>
         <tbody>
