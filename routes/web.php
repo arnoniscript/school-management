@@ -21,7 +21,7 @@ use App\Http\Controllers\CourseController;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
-    Route::post('/courses', [CourseController::class, 'store'])->middleware('admin')->name('courses.store');
+    Route::post('/courses', [CourseController::class, 'store'])->name('courses.store');
 });
 
 
