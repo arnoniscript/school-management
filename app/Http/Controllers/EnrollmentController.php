@@ -9,6 +9,40 @@ use Illuminate\Http\Request;
 
 class EnrollmentController extends Controller
 {
+
+    public function allEnrollments(Request $request)
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Você não tem permissão para acessar esta rota.');
+        }
+
+        $query = Enrollment::query();
+
+        if ($request->filled('student_name')) {
+            $query->whereHas('student', function ($q) use ($request) {
+                $q->where('full_name', 'LIKE', '%' . $request->input('student_name') . '%');
+            });
+        }
+
+        if ($request->filled('course_name')) {
+            $query->whereHas('course', function ($q) use ($request) {
+                $q->where('name', 'LIKE', '%' . $request->input('course_name') . '%');
+            });
+        }
+
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('created_at', [$request->input('start_date'), $request->input('end_date')]);
+        }
+
+        $sort = $request->input('sort', 'created_at');
+        $direction = $request->input('direction', 'desc');
+        $query->orderBy($sort, $direction);
+
+        $perPage = $request->input('per_page', 15);
+        $enrollments = $query->with(['student', 'course'])->paginate($perPage)->appends($request->query());
+
+        return view('enrollments.all', compact('enrollments'));
+    }
     public function index(Request $request, Course $course)
     {
         $user = auth()->user();
@@ -90,5 +124,20 @@ class EnrollmentController extends Controller
 
         return redirect()->route('courses.enrollments', $course)->with('success', 'Matrículas atualizadas com sucesso!');
     }
+    public function bulkDelete(Request $request)
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Você não tem permissão para acessar esta rota.');
+        }
+        $validated = $request->validate([
+            'selected_enrollments' => 'required|array',
+            'selected_enrollments.*' => 'exists:enrollments,id',
+        ]);
+
+        Enrollment::whereIn('id', $validated['selected_enrollments'])->delete();
+
+        return redirect()->route('enrollments.all')->with('success', 'Matrículas deletadas com sucesso!');
+    }
+
 }
 

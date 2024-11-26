@@ -19,6 +19,10 @@
                     <x-nav-link :href="route('students.index')" :active="request()->routeIs('students.index')">
                         {{ __('Estudantes') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('enrollments.all')" :active="request()->routeIs('enrollments.all')">
+                        {{ __('Gerenciar Matrículas') }}
+                    </x-nav-link>
+
                                 @endif
                 </div>
             </div>
