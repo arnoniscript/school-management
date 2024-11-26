@@ -100,6 +100,10 @@ class StudentController extends Controller
 
     public function bulkDelete(Request $request)
     {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Você não tem permissão para acessar esta rota.');
+        }
+
         $validated = $request->validate([
             'selected_students' => 'required|array',
             'selected_students.*' => 'exists:students,id',

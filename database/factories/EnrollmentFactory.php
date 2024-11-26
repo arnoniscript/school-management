@@ -1,4 +1,5 @@
 <?php
+namespace Database\Factories;
 
 use App\Models\Enrollment;
 use Illuminate\Database\Eloquent\Factories\Factory;
