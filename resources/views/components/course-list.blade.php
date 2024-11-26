@@ -2,7 +2,6 @@
     @csrf
     @method('DELETE')
 
-    <!-- Botão de Lixeira (Somente para Admins) -->
     @if(auth()->user()->isAdmin())
         <div class="mb-3 d-none" id="delete-button-container">
             <button type="submit" class="btn btn-danger">
@@ -19,9 +18,9 @@
                 @endif
                 <th style="width: 30%;">Nome</th>
                 <th style="width: 15%;">Vagas Restantes</th>
-                <th style="width: 20%;">Data Máxima</th>
+                <th style="width: 15%;">Data Máxima</th>
                 <th style="width: 15%;">Tipo</th>
-                <th style="width: 15%;">Ações</th>
+                <th style="width: 20%;">Ações</th>
             </tr>
         </thead>
         <tbody id="course-list">
@@ -40,12 +39,16 @@
                             <td>
                                 @php
                                     $student = \App\Models\Student::where('email', auth()->user()->email)->first();
+
                                     $isEnrolled = $student
                                         ? $course->enrollments->where('student_id', $student->id)->count() > 0
                                         : false;
 
-                                    $enrollmentClosed = now()->greaterThan($course->final_date) || $course->enrollments->count() >= $course->max_students;
+                                    $finalDateEndOfDay = \Carbon\Carbon::parse($course->final_date)->endOfDay();
+
+                                    $enrollmentClosed = now()->greaterThan($finalDateEndOfDay) || $course->enrollments->count() >= $course->max_students;
                                 @endphp
+
 
                                 @if(auth()->user()->role === 'admin')
                                     <a href="{{ route('courses.enrollments', $course->id) }}" class="btn btn-success btn-sm">
@@ -88,13 +91,11 @@
             const deleteButtonContainer = document.getElementById('delete-button-container');
             const selectAllCheckbox = document.getElementById('select-all');
 
-            // Atualiza o botão de deletar ao alterar checkboxes
             const updateDeleteButton = () => {
                 const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
                 deleteButtonContainer.classList.toggle('d-none', !anyChecked);
             };
 
-            // Marcar/desmarcar todos os checkboxes
             selectAllCheckbox.addEventListener('change', (event) => {
                 const isChecked = event.target.checked;
                 checkboxes.forEach(checkbox => {
@@ -104,7 +105,6 @@
                 updateDeleteButton();
             });
 
-            // Atualizar destaque e botão ao clicar individualmente
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', (event) => {
                     const row = event.target.closest('tr');
