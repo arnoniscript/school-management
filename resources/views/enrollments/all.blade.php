@@ -96,6 +96,10 @@
         </form>
     </div>
 
+    <div class="d-flex justify-content-center mt-4">
+        {{ $enrollments->links() }}
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             @if(auth()->user()->isAdmin())

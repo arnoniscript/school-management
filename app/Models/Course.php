@@ -20,4 +20,9 @@ class Course extends Model
     {
         return $this->hasMany(Enrollment::class);
     }
+
+    public function remainingSpots()
+    {
+        return $this->max_students - $this->enrollments()->count();
+    }
 }
