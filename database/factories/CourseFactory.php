@@ -18,7 +18,7 @@ class CourseFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->words(3, true),
-            'max_students' => $this->faker->numberBetween(10, 100),
+            'max_students' => $this->faker->numberBetween(10, 30),
             'final_date' => $this->faker->dateTimeBetween('now', '+1 year'),
             'type' => $this->faker->randomElement(['online', 'presencial']),
         ];
