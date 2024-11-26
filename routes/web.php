@@ -33,6 +33,10 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
     Route::get('/courses/{course}/enrollments', [EnrollmentController::class, 'index'])->name('courses.enrollments');
     Route::post('/courses/{course}/enrollments', [EnrollmentController::class, 'store'])->name('courses.enrollments.store');
+    Route::delete('/courses/bulk-delete', [CourseController::class, 'bulkDelete'])->name('courses.bulk-delete');
+    Route::delete('/students/bulk-delete', [StudentController::class, 'bulkDelete'])->name('students.bulk-delete');
+
+
 
 
 

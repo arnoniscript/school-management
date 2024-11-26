@@ -13,7 +13,11 @@ class EnrollmentController extends Controller
     {
         $user = auth()->user();
 
-        // Verificar se o usuário é admin
+        // Verificar se o número de vagas está esgotado ou se a data máxima foi ultrapassada
+        if (!$user->isAdmin() && ($course->enrollments->count() >= $course->max_students || now()->greaterThan($course->final_date))) {
+            abort(403, 'As matrículas estão encerradas para este curso.');
+        }
+
         if ($user->isAdmin()) {
             $studentsQuery = Student::query();
 
@@ -42,16 +46,18 @@ class EnrollmentController extends Controller
         return view('enrollments.index', compact('course', 'students', 'enrollments', 'user'));
     }
 
-
-
     public function store(Request $request, Course $course)
     {
+        $user = auth()->user();
+
+        if (!$user->isAdmin() && ($course->enrollments->count() >= $course->max_students || now()->greaterThan($course->final_date))) {
+            abort(403, 'As matrículas estão encerradas para este curso.');
+        }
+
         $validated = $request->validate([
             'students' => 'array', // `students` pode ser opcional
             'students.*' => 'exists:students,id',
         ]);
-
-        $user = auth()->user();
 
         if (!$user->isAdmin()) {
             $student = Student::where('email', $user->email)->first();
@@ -59,20 +65,16 @@ class EnrollmentController extends Controller
                 abort(403, 'Você não está autorizado a se matricular.');
             }
 
-            // Student só pode se matricular em si mesmo
             $validated['students'] = [$student->id];
         }
 
         $existingEnrollments = Enrollment::where('course_id', $course->id)->pluck('student_id')->toArray();
         $selectedStudents = $validated['students'] ?? [];
 
-        // Matrículas a serem adicionadas
         $studentsToAdd = array_diff($selectedStudents, $existingEnrollments);
 
-        // Matrículas a serem removidas
         $studentsToRemove = array_diff($existingEnrollments, $selectedStudents);
 
-        // Adicionar novas matrículas
         foreach ($studentsToAdd as $studentId) {
             Enrollment::updateOrCreate(
                 ['course_id' => $course->id, 'student_id' => $studentId],
@@ -80,7 +82,6 @@ class EnrollmentController extends Controller
             );
         }
 
-        // Remover matrículas desmarcadas
         foreach ($studentsToRemove as $studentId) {
             Enrollment::where('course_id', $course->id)
                 ->where('student_id', $studentId)
@@ -89,5 +90,5 @@ class EnrollmentController extends Controller
 
         return redirect()->route('courses.enrollments', $course)->with('success', 'Matrículas atualizadas com sucesso!');
     }
-
 }
+
