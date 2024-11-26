@@ -98,5 +98,18 @@ class StudentController extends Controller
         return redirect()->route('students.show', $student)->with('success', 'Estudante atualizado com sucesso!');
     }
 
+    public function bulkDelete(Request $request)
+    {
+        $validated = $request->validate([
+            'selected_students' => 'required|array',
+            'selected_students.*' => 'exists:students,id',
+        ]);
+
+        Student::whereIn('id', $validated['selected_students'])->delete();
+
+        return redirect()->route('students.index')->with('success', 'Estudantes deletados com sucesso!');
+    }
+
+
 
 }

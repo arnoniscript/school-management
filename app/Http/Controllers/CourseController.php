@@ -73,6 +73,10 @@ class CourseController extends Controller
 
     public function show(Course $course)
     {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Você não tem permissão para acessar esta rota.');
+        }
+
         return view('courses.show', compact('course'));
     }
 
@@ -94,6 +98,22 @@ class CourseController extends Controller
         return redirect()->route('courses.show', $course)
             ->with('success', 'Curso atualizado com sucesso!');
     }
+
+    public function bulkDelete(Request $request)
+    {
+        if (!auth()->user()->isAdmin()) {
+            abort(403, 'Você não tem permissão para acessar esta rota.');
+        }
+        $validated = $request->validate([
+            'selected_courses' => 'required|array',
+            'selected_courses.*' => 'exists:courses,id',
+        ]);
+
+        Course::whereIn('id', $validated['selected_courses'])->delete();
+
+        return redirect()->route('courses.index')->with('success', 'Cursos deletados com sucesso!');
+    }
+
 
 
 }

@@ -14,7 +14,7 @@
 
     <div class="form-group">
         <label for="max_students">Máximo de Estudantes</label>
-        <input type="number" class="form-control" id="max_students" name="max_students"
+        <input type="number" class="form-control" id="max_students" name="max_students" min="1"
             value="{{ $course->max_students ?? '' }}" required>
     </div>
 

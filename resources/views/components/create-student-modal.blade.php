@@ -27,7 +27,9 @@
                     </div>
                     <div class="mb-3">
                         <label for="cpf" class="form-label">CPF</label>
-                        <input type="text" class="form-control" id="cpf" name="cpf" required>
+                        <input type="text" class="form-control" id="cpf" name="cpf" required pattern="\d{11}"
+                            maxlength="11" minlength="11" inputmode="numeric"
+                            title="Por favor, insira exatamente 11 números.">
                     </div>
                     <button type="submit" class="btn btn-primary">Salvar</button>
                 </form>

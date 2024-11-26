@@ -8,22 +8,11 @@
     <div class="container mt-4">
         <!-- Formulário de Filtro -->
         @if ($user->isAdmin())
-            <form method="GET" action="{{ route('courses.enrollments', $course) }}" class="mb-4">
-                <div class="row">
-                    <div class="col-md-6">
-                        <input type="text" name="name" class="form-control" placeholder="Nome do Estudante"
-                            value="{{ request('name') }}">
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" name="cpf" class="form-control" placeholder="CPF"
-                            value="{{ request('cpf') }}">
-                    </div>
-                </div>
-                <div class="mt-3">
-                    <button type="submit" class="btn btn-success">Filtrar</button>
-                    <a href="{{ route('courses.enrollments', $course) }}" class="btn btn-secondary">Limpar Filtros</a>
-                </div>
-            </form>
+        <x-filter-form :action="route('courses.enrollments', $course)" :fields="[
+    ['name' => 'name', 'placeholder' => 'Nome do Estudante'],
+    ['name' => 'cpf', 'placeholder' => 'CPF']
+]" />
+
         @endif
 
         <form action="{{ route('courses.enrollments.store', $course) }}" method="POST">
@@ -101,7 +90,6 @@
                 remainingSpotsElement.textContent = remainingSpots;
             };
 
-            // Inicializa as vagas restantes
             updateRemainingSpots();
 
             checkboxes.forEach(checkbox => {
@@ -119,7 +107,6 @@
                 });
             });
 
-            // Inicializar toasts do Bootstrap
             const successToast = document.getElementById('successToast');
             const errorToast = document.getElementById('errorToast');
 

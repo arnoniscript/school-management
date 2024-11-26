@@ -7,7 +7,7 @@ use App\Http\Controllers\EnrollmentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/dashboard', function () {
@@ -33,6 +33,12 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
     Route::get('/courses/{course}/enrollments', [EnrollmentController::class, 'index'])->name('courses.enrollments');
     Route::post('/courses/{course}/enrollments', [EnrollmentController::class, 'store'])->name('courses.enrollments.store');
+    Route::delete('/courses/bulk-delete', [CourseController::class, 'bulkDelete'])->name('courses.bulk-delete');
+    Route::delete('/students/bulk-delete', [StudentController::class, 'bulkDelete'])->name('students.bulk-delete');
+    Route::get('/enrollments/all', [EnrollmentController::class, 'allEnrollments'])->name('enrollments.all');
+    Route::delete('/enrollments/bulk-delete', [EnrollmentController::class, 'bulkDelete'])->name('enrollments.bulk-delete');
+
+
 
 
 
