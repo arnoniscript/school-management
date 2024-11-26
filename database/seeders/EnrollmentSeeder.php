@@ -11,7 +11,6 @@ class EnrollmentSeeder extends Seeder
 {
     public function run()
     {
-        // Gera 50 matrículas com cursos e estudantes aleatórios
         $courses = Course::all();
         $students = Student::all();
 
