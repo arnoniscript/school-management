@@ -39,12 +39,16 @@
                             <td>
                                 @php
                                     $student = \App\Models\Student::where('email', auth()->user()->email)->first();
+
                                     $isEnrolled = $student
                                         ? $course->enrollments->where('student_id', $student->id)->count() > 0
                                         : false;
 
-                                    $enrollmentClosed = now()->greaterThan($course->final_date) || $course->enrollments->count() >= $course->max_students;
+                                    $finalDateEndOfDay = \Carbon\Carbon::parse($course->final_date)->endOfDay();
+
+                                    $enrollmentClosed = now()->greaterThan($finalDateEndOfDay) || $course->enrollments->count() >= $course->max_students;
                                 @endphp
+
 
                                 @if(auth()->user()->role === 'admin')
                                     <a href="{{ route('courses.enrollments', $course->id) }}" class="btn btn-success btn-sm">
