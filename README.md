@@ -90,3 +90,12 @@ Para rodar, utilize o comando
 ```
 
 ## Screenshots
+
+![Captura de Tela 2024-11-26 às 17 01 48](https://github.com/user-attachments/assets/20c7ed93-49ae-412f-90cd-8d5cab5bc900)
+![Captura de Tela 2024-11-26 às 17 01 55](https://github.com/user-attachments/assets/2699a879-cd23-43b3-8bdc-c5f6ce71a4fc)
+![Captura de Tela 2024-11-26 às 17 02 04](https://github.com/user-attachments/assets/a6028ccd-700d-4977-9fc7-d89ea98a991e)
+![Captura de Tela 2024-11-26 às 17 02 15](https://github.com/user-attachments/assets/9f7a57c7-2bb9-4a80-8693-10a33b9b26a9)
+![Captura de Tela 2024-11-26 às 17 02 30](https://github.com/user-attachments/assets/9fb1c1be-0577-41ed-b57b-97b24eced074)
+![Captura de Tela 2024-11-26 às 17 02 43](https://github.com/user-attachments/assets/da20d2d0-a357-4650-bd00-8a723feb1114)
+![Captura de Tela 2024-11-26 às 17 02 54](https://github.com/user-attachments/assets/ab0826de-516a-4d77-9d7b-86c73bf64c01)
+
